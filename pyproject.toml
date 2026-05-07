@@ -1,6 +1,39 @@
+[project]
+name = "bixi"
+version = "0.0.2"
+description = "Bixi - Bixi API client"
+authors = [
+    { name = "Renaud Bourassa", email = "rbourassadenis@gmail.com" }
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.6"
+dependencies = [
+    "gql[requests]",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "pyright",
+]
+
 [build-system]
 requires = [
     "setuptools>=42",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 120
+fix = true
+
+[tool.pyright]
+include = [ "src/" ]
+pythonVersion = "3.14"
+venvPath = "."
+venv = ".venv"
+typeCheckingMode = "standard"
+reportUnnecessaryTypeIgnoreComment = "error"
