@@ -27,12 +27,12 @@ class Station:
 
 
 @dataclass
-class Trip:
-    """Bixi trip data class."""
+class Ride:
+    """Bixi ride data class."""
 
-    ride_id: str
-    start_time_ms: datetime
-    end_time_ms: datetime
+    id: str
+    start_time: datetime
+    end_time: datetime
     price: float
     duration: timedelta
     start_station_name: str
@@ -82,7 +82,7 @@ class Bixi:
 
         return Bixi(session)
 
-    def trips(self, offset: int = 0) -> list[Trip]:
+    def rides(self, offset: int = 0) -> list[Ride]:
         """Gets all trips between `start_time` and `end_time`."""
 
         query = gql(
@@ -127,10 +127,10 @@ class Bixi:
             raise BixiError(f"Failed to get trips: {e}") from e
 
         return [
-            Trip(
-                ride_id=r["rideId"],
-                start_time_ms=datetime.fromtimestamp(int(r["startTimeMs"]) / 1000, UTC),
-                end_time_ms=datetime.fromtimestamp(int(r["endTimeMs"]) / 1000, UTC),
+            Ride(
+                id=r["rideId"],
+                start_time=datetime.fromtimestamp(int(r["startTimeMs"]) / 1000, UTC),
+                end_time=datetime.fromtimestamp(int(r["endTimeMs"]) / 1000, UTC),
                 price=float(r["price"]["amount"]),
                 duration=timedelta(seconds=int(r["duration"]) / 1000),
                 start_station_name=r["startAddressStr"],
