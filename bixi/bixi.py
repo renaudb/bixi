@@ -84,6 +84,8 @@ class Bixi:
 
     def rides(self, offset: int = 0) -> list[Ride]:
         """Gets all trips between `start_time` and `end_time`."""
+        if offset < 0:
+            raise ValueError("Offset must be greater than 0")
 
         query = gql(
             dedent("""
@@ -118,7 +120,7 @@ class Bixi:
             """)
         )
         query.variable_values = {
-            **({"startTimeMs": offset if offset is not None else None}),
+            **({"startTimeMs": offset} if offset else {}),
         }
 
         try:
