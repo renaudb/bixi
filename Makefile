@@ -1,3 +1,5 @@
+.PHONY: lint test format typecheck docs
+
 lint:
 	ruff check .
 	pyright .
@@ -10,3 +12,6 @@ format:
 
 typecheck:
 	pyright .
+
+docs:
+	sphinx-build -b html docs docs/_build
