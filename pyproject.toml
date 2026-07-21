@@ -18,6 +18,7 @@ dev = [
     "ruff",
     "pyright",
     "pre-commit",
+    "bump-my-version",
 ]
 
 [build-system]
@@ -26,6 +27,18 @@ requires = [
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.bumpversion]
+current_version = "0.0.2"
+commit = true
+tag = true
+tag_name = "v{new_version}"
+message = "Bump version: {current_version} → {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
 
 [tool.ruff]
 line-length = 120
