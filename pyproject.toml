@@ -32,7 +32,6 @@ build-backend = "setuptools.build_meta"
 version = { attr = "bixi.__version__" }
 
 [tool.bumpversion]
-current_version = "0.0.2"
 commit = true
 tag = true
 tag_name = "v{new_version}"

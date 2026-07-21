@@ -37,8 +37,10 @@ jobs:
       - name: Bump version
         id: bump
         run: |
-          bump-my-version bump ${{ inputs.bump }}
-          echo "new_version=$(bump-my-version show current_version)" >> "$GITHUB_OUTPUT"
+          current_version=$(grep -oP '(?<=__version__ = ")[^"]+' bixi/__init__.py)
+          bump-my-version bump ${{ inputs.bump }} --current-version "$current_version"
+          new_version=$(grep -oP '(?<=__version__ = ")[^"]+' bixi/__init__.py)
+          echo "new_version=$new_version" >> "$GITHUB_OUTPUT"
 
       - name: Push commit and tag
         run: git push --follow-tags
