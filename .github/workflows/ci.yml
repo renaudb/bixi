@@ -23,4 +23,4 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e .[dev]
-      - run: pytest
+      - run: pytest || [ "$?" -eq 5 ]  # exit 5 = no tests collected yet
