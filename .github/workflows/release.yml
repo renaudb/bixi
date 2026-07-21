@@ -19,15 +19,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install bump-my-version
-        run: python -m pip install --upgrade bump-my-version
+      - uses: astral-sh/setup-uv@v5
 
       - name: Configure git
         run: |
@@ -37,13 +30,14 @@ jobs:
       - name: Bump version
         id: bump
         run: |
-          current_version=$(grep -oP '(?<=__version__ = ")[^"]+' bixi/__init__.py)
-          bump-my-version bump ${{ inputs.bump }} --current-version "$current_version"
-          new_version=$(grep -oP '(?<=__version__ = ")[^"]+' bixi/__init__.py)
+          new_version=$(uv version --bump ${{ inputs.bump }} --no-sync --short)
           echo "new_version=$new_version" >> "$GITHUB_OUTPUT"
 
-      - name: Push commit and tag
-        run: git push --follow-tags
+      - name: Commit, tag, and push
+        run: |
+          git commit -am "Bump version: ${{ steps.bump.outputs.new_version }}"
+          git tag "v${{ steps.bump.outputs.new_version }}"
+          git push --follow-tags
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

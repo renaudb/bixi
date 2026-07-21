@@ -1,6 +1,6 @@
 [project]
 name = "bixi-sdk"
-dynamic = ["version"]
+version = "0.0.2"
 description = "Bixi - Bixi API client"
 authors = [
     { name = "Renaud Bourassa", email = "rbourassadenis@gmail.com" }
@@ -18,29 +18,14 @@ dev = [
     "ruff",
     "pyright",
     "pre-commit",
-    "bump-my-version",
 ]
 
 [build-system]
 requires = [
-    "setuptools>=61",
+    "setuptools>=42",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools.dynamic]
-version = { attr = "bixi.__version__" }
-
-[tool.bumpversion]
-commit = true
-tag = true
-tag_name = "v{new_version}"
-message = "Bump version: {current_version} → {new_version}"
-
-[[tool.bumpversion.files]]
-filename = "bixi/__init__.py"
-search = '__version__ = "{current_version}"'
-replace = '__version__ = "{new_version}"'
 
 [tool.ruff]
 line-length = 120
