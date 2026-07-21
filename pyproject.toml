@@ -1,5 +1,5 @@
 [project]
-name = "bixi"
+name = "bixi-sdk"
 version = "0.0.2"
 description = "Bixi - Bixi API client"
 authors = [
