@@ -17,6 +17,7 @@ dev = [
     "pytest",
     "ruff",
     "pyright",
+    "pre-commit",
 ]
 
 [build-system]
@@ -30,8 +31,11 @@ build-backend = "setuptools.build_meta"
 line-length = 120
 fix = true
 
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
 [tool.pyright]
-include = [ "src/" ]
+include = [ "bixi/" ]
 pythonVersion = "3.14"
 venvPath = "."
 venv = ".venv"
