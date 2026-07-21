@@ -4,3 +4,5 @@ __pycache__/
 .vscode/
 *.egg-info/
 uv.lock
+
+docs/_build/
