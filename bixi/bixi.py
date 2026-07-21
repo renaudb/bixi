@@ -9,16 +9,23 @@ from gql.transport.requests import RequestsHTTPTransport
 
 
 class BixiError(Exception):
-    """Bixi API client error."""
+    """Raised when a Bixi API request fails."""
 
 
 class BixiLoginError(BixiError):
-    """Bixi login error."""
+    """Raised when authenticating with the Bixi API fails."""
 
 
 @dataclass
 class Station:
-    """Bixi station data class."""
+    """A Bixi bike-share station.
+
+    Attributes:
+        id: Unique identifier of the station.
+        name: Display name of the station.
+        lat: Latitude of the station.
+        lng: Longitude of the station.
+    """
 
     id: str
     name: str
@@ -28,7 +35,17 @@ class Station:
 
 @dataclass
 class Ride:
-    """Bixi ride data class."""
+    """A completed Bixi ride.
+
+    Attributes:
+        id: Unique identifier of the ride.
+        start_time: Date and time the ride started.
+        end_time: Date and time the ride ended.
+        price: Price charged for the ride.
+        duration: Duration of the ride.
+        start_station_name: Name of the station where the ride started.
+        end_station_name: Name of the station where the ride ended.
+    """
 
     id: str
     start_time: datetime
@@ -40,17 +57,38 @@ class Ride:
 
 
 class Bixi:
-    """Bixi API client."""
+    """Client for the Bixi GraphQL API.
+
+    Attributes:
+        GRAPHQL_URL: URL of the Bixi GraphQL endpoint.
+    """
 
     GRAPHQL_URL = "https://secure.bixi.com/bikesharefe-gql"
 
     def __init__(self, session: SyncClientSession):
+        """Create a client from an already-authenticated GraphQL session.
+
+        Args:
+            session: Authenticated GraphQL client session, as returned by
+                `login`.
+        """
         self._session = session
 
     @classmethod
     def login(cls, username: str, password: str) -> "Bixi":
-        """Logs into Bixi using `username`, `password` and `account` returning an
-        authenticated Bixi client object."""
+        """Log into the Bixi API and return an authenticated client.
+
+        Args:
+            username: Bixi account username.
+            password: Bixi account password.
+
+        Returns:
+            An authenticated Bixi client.
+
+        Raises:
+            BixiLoginError: If the login request fails, is rejected, or no
+                session cookie is returned.
+        """
 
         transport = RequestsHTTPTransport(url=cls.GRAPHQL_URL, headers={"Accept-Language": "en-US,en;q=0.9"})
         transport.connect()
@@ -83,7 +121,19 @@ class Bixi:
         return Bixi(session)
 
     def rides(self, offset: int = 0) -> list[Ride]:
-        """Gets all trips between `start_time` and `end_time`."""
+        """Get the current member's ride history.
+
+        Args:
+            offset: Number of most-recent rides to skip, for pagination.
+                Defaults to 0, which returns the full ride history.
+
+        Returns:
+            List of rides, most recent first.
+
+        Raises:
+            ValueError: If `offset` is negative.
+            BixiError: If the request to fetch rides fails.
+        """
         if offset < 0:
             raise ValueError("Offset must be greater than 0")
 
@@ -142,7 +192,14 @@ class Bixi:
         ]
 
     def stations(self) -> list[Station]:
-        """Gets all stations."""
+        """Get all Bixi stations currently in service.
+
+        Returns:
+            List of stations.
+
+        Raises:
+            BixiError: If the request to fetch stations fails.
+        """
 
         query = gql(
             dedent("""
