@@ -124,9 +124,8 @@ class Bixi:
         """Get the current member's ride history.
 
         Args:
-            offset: Unix timestamp in milliseconds; only rides that started
-                at or after this time are returned. Defaults to 0, which
-                returns the full ride history.
+            offset: Number of most-recent rides to skip, for pagination.
+                Defaults to 0, which returns the full ride history.
 
         Returns:
             List of rides, most recent first.
