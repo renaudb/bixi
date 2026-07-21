@@ -20,14 +20,11 @@ class BixiLoginError(BixiError):
 class Station:
     """A Bixi bike-share station.
 
-    :ivar id: Unique identifier of the station.
-    :vartype id: str
-    :ivar name: Display name of the station.
-    :vartype name: str
-    :ivar lat: Latitude of the station.
-    :vartype lat: float
-    :ivar lng: Longitude of the station.
-    :vartype lng: float
+    Attributes:
+        id: Unique identifier of the station.
+        name: Display name of the station.
+        lat: Latitude of the station.
+        lng: Longitude of the station.
     """
 
     id: str
@@ -40,20 +37,14 @@ class Station:
 class Ride:
     """A completed Bixi ride.
 
-    :ivar id: Unique identifier of the ride.
-    :vartype id: str
-    :ivar start_time: Date and time the ride started.
-    :vartype start_time: datetime.datetime
-    :ivar end_time: Date and time the ride ended.
-    :vartype end_time: datetime.datetime
-    :ivar price: Price charged for the ride.
-    :vartype price: float
-    :ivar duration: Duration of the ride.
-    :vartype duration: datetime.timedelta
-    :ivar start_station_name: Name of the station where the ride started.
-    :vartype start_station_name: str
-    :ivar end_station_name: Name of the station where the ride ended.
-    :vartype end_station_name: str
+    Attributes:
+        id: Unique identifier of the ride.
+        start_time: Date and time the ride started.
+        end_time: Date and time the ride ended.
+        price: Price charged for the ride.
+        duration: Duration of the ride.
+        start_station_name: Name of the station where the ride started.
+        end_station_name: Name of the station where the ride ended.
     """
 
     id: str
@@ -68,8 +59,8 @@ class Ride:
 class Bixi:
     """Client for the Bixi GraphQL API.
 
-    :ivar GRAPHQL_URL: URL of the Bixi GraphQL endpoint.
-    :vartype GRAPHQL_URL: str
+    Attributes:
+        GRAPHQL_URL: URL of the Bixi GraphQL endpoint.
     """
 
     GRAPHQL_URL = "https://secure.bixi.com/bikesharefe-gql"
@@ -77,9 +68,9 @@ class Bixi:
     def __init__(self, session: SyncClientSession):
         """Create a client from an already-authenticated GraphQL session.
 
-        :param session: Authenticated GraphQL client session, as returned by
-            :meth:`login`.
-        :type session: gql.client.SyncClientSession
+        Args:
+            session: Authenticated GraphQL client session, as returned by
+                `login`.
         """
         self._session = session
 
@@ -87,14 +78,16 @@ class Bixi:
     def login(cls, username: str, password: str) -> "Bixi":
         """Log into the Bixi API and return an authenticated client.
 
-        :param username: Bixi account username.
-        :type username: str
-        :param password: Bixi account password.
-        :type password: str
-        :returns: An authenticated Bixi client.
-        :rtype: Bixi
-        :raises BixiLoginError: If the login request fails, is rejected, or
-            no session cookie is returned.
+        Args:
+            username: Bixi account username.
+            password: Bixi account password.
+
+        Returns:
+            An authenticated Bixi client.
+
+        Raises:
+            BixiLoginError: If the login request fails, is rejected, or no
+                session cookie is returned.
         """
 
         transport = RequestsHTTPTransport(url=cls.GRAPHQL_URL, headers={"Accept-Language": "en-US,en;q=0.9"})
@@ -130,14 +123,17 @@ class Bixi:
     def rides(self, offset: int = 0) -> list[Ride]:
         """Get the current member's ride history.
 
-        :param offset: Unix timestamp in milliseconds; only rides that
-            started at or after this time are returned. Defaults to ``0``,
-            which returns the full ride history.
-        :type offset: int
-        :returns: List of rides, most recent first.
-        :rtype: list[Ride]
-        :raises ValueError: If `offset` is negative.
-        :raises BixiError: If the request to fetch rides fails.
+        Args:
+            offset: Unix timestamp in milliseconds; only rides that started
+                at or after this time are returned. Defaults to 0, which
+                returns the full ride history.
+
+        Returns:
+            List of rides, most recent first.
+
+        Raises:
+            ValueError: If `offset` is negative.
+            BixiError: If the request to fetch rides fails.
         """
         if offset < 0:
             raise ValueError("Offset must be greater than 0")
@@ -199,9 +195,11 @@ class Bixi:
     def stations(self) -> list[Station]:
         """Get all Bixi stations currently in service.
 
-        :returns: List of stations.
-        :rtype: list[Station]
-        :raises BixiError: If the request to fetch stations fails.
+        Returns:
+            List of stations.
+
+        Raises:
+            BixiError: If the request to fetch stations fails.
         """
 
         query = gql(
