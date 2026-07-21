@@ -1,6 +1,6 @@
 [project]
 name = "bixi-sdk"
-version = "0.0.2"
+dynamic = ["version"]
 description = "Bixi - Bixi API client"
 authors = [
     { name = "Renaud Bourassa", email = "rbourassadenis@gmail.com" }
@@ -22,10 +22,14 @@ dev = [
 
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools>=64",
+    "setuptools_scm>=8",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+fallback_version = "0.0.0"
 
 [tool.ruff]
 line-length = 120
