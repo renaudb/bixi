@@ -1,1 +1,2 @@
 bixi-sdk
+sphinx_rtd_theme
