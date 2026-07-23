@@ -4,7 +4,7 @@ Bixi API Client
 Overview
 --------
 
-``bixi-sdk`` is a Python client for the Bixi bike-share GraphQL API. It lets
+``bixi-sdk`` is a Python SDK for the BIXI Montréal bike-sharing system. It lets
 you log into a Bixi account and query ride history and station information.
 
 Installation

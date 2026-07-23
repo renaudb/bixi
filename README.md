@@ -7,7 +7,7 @@ Bixi API Client
 
 ## Description
 
-Simple Bixi API Client
+Python SDK for the BIXI Montréal bike-sharing system.
 
 ## Documentation
 
