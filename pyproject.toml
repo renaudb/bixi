@@ -5,12 +5,25 @@ description = "Bixi - Bixi API client"
 authors = [
     { name = "Renaud Bourassa", email = "rbourassadenis@gmail.com" }
 ]
-license = { file = "LICENSE" }
+license = "MIT"
 readme = "README.md"
 requires-python = ">=3.6"
+keywords = ["bixi", "bike-share", "api-client"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 dependencies = [
     "gql[requests]",
 ]
+
+[project.urls]
+Homepage = "https://github.com/renaudb/bixi"
+Repository = "https://github.com/renaudb/bixi"
+Issues = "https://github.com/renaudb/bixi/issues"
+Documentation = "https://bixi.readthedocs.io/"
 
 [project.optional-dependencies]
 dev = [
